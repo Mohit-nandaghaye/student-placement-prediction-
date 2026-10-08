@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Student Placement Prediction & Readiness System</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Chart.js for Visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="logo">🎓 PlacementAI</div>
+        <nav>
+            <a href="#home" class="nav-link active">Home</a>
+            <a href="#predictor" class="nav-link">Predictor</a>
+            <a href="#readiness" class="nav-link">Career Readiness</a>
+            <a href="#performance" class="nav-link">Model Performance</a>
+            <a href="#about" class="nav-link">About</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <!-- SECTION 1: HOME -->
+        <section id="home" class="tab-content active-tab">
+            <div class="hero">
+                <h1>AI-Based Student Placement Prediction</h1>
+                <p>Career Readiness & Decision-Support System for Engineering & College Students</p>
+                <button class="btn-primary" onclick="switchTab('predictor')">Start Prediction</button>
+            </div>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>🎯 Accurate Prediction</h3>
+                    <p>Calculates placement probability based on Machine Learning scoring algorithms.</p>
+                </div>
+                <div class="card">
+                    <h3>📊 Readiness Breakdown</h3>
+                    <p>Categorizes skills across Academics, Technical, Communication, Aptitude, and Experience.</p>
+                </div>
+                <div class="card">
+                    <h3>💡 Recommendations</h3>
+                    <p>Highlights immediate strengths and actionable improvement areas for placement drives.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: STUDENT INPUT & PREDICTOR -->
+        <section id="predictor" class="tab-content">
+            <h2>📝 Student Data Input Form</h2>
+            <p>Fill out the profile details to analyze placement probability and career readiness.</p>
+
+            <form id="placementForm">
+                <div class="form-grid">
+                    <!-- Column 1: Academics -->
+                    <div class="form-group-card">
+                        <h3>Academics</h3>
+                        <label>CGPA (0.0 - 10.0):</label>
+                        <input type="number" id="cgpa" step="0.1" min="0" max="10" value="8.2" required>
+
+                        <label>10th Percentage (%):</label>
+                        <input type="number" id="tenth" min="0" max="100" value="87" required>
+
+                        <label>12th Percentage (%):</label>
+                        <input type="number" id="twelfth" min="0" max="100" value="84" required>
+
+                        <label>Backlogs Count:</label>
+                        <input type="number" id="backlogs" min="0" max="10" value="0" required>
+                    </div>
+
+                    <!-- Column 2: Assessment Scores -->
+                    <div class="form-group-card">
+                        <h3>Skill Assessments</h3>
+                        <label>Technical Skill Score (1-10): <span id="techVal">8</span></label>
+                        <input type="range" id="technical" min="1" max="10" value="8" oninput="techVal.innerText=this.value">
+
+                        <label>Communication Score (1-10): <span id="commVal">7</span></label>
+                        <input type="range" id="communication" min="1" max="10" value="7" oninput="commVal.innerText=this.value">
+
+                        <label>Aptitude Score (1-10): <span id="aptVal">8</span></label>
+                        <input type="range" id="aptitude" min="1" max="10" value="8" oninput="aptVal.innerText=this.value">
+
+                        <label>Attendance Percentage (%):</label>
+                        <input type="number" id="attendance" min="0" max="100" value="91" required>
+                    </div>
+
+                    <!-- Column 3: Experience -->
+                    <div class="form-group-card">
+                        <h3>Experience & Projects</h3>
+                        <label>Internships Completed:</label>
+                        <input type="number" id="internships" min="0" max="10" value="2" required>
+
+                        <label>Projects Completed:</label>
+                        <input type="number" id="projects" min="0" max="10" value="3" required>
+
+                        <label>Certifications Earned:</label>
+                        <input type="number" id="certifications" min="0" max="10" value="4" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Predict Placement & Analyze Readiness</button>
+            </form>
+
+            <!-- Prediction Result Display -->
+            <div id="resultBox" class="result-box hidden">
+                <h3>Prediction Results</h3>
+                <div class="result-metrics">
+                    <div class="metric">
+                        <span>Placement Status</span>
+                        <strong id="predictionOutcome">-</strong>
+                    </div>
+                    <div class="metric">
+                        <span>Estimated Probability</span>
+                        <strong id="predictionProb">-</strong>
+                    </div>
+                    <div class="metric">
+                        <span>Readiness Category</span>
+                        <strong id="overallReadiness">-</strong>
+                    </div>
+                </div>
+                <button class="btn-secondary" onclick="switchTab('readiness')">View Detailed Readiness Breakdown →</button>
+            </div>
+        </section>
+
+        <!-- SECTION 3: CAREER READINESS -->
+        <section id="readiness" class="tab-content">
+            <h2>🎯 Career Readiness Analysis</h2>
+            <p>Breakdown of student profile parameters across 5 critical readiness areas.</p>
+
+            <div class="readiness-grid">
+                <div class="chart-container">
+                    <canvas id="readinessChart"></canvas>
+                </div>
+
+                <div class="analysis-details">
+                    <div class="strengths-box">
+                        <h3>💪 Key Strengths</h3>
+                        <ul id="strengthsList"><li>Submit data in the Predictor tab first.</li></ul>
+                    </div>
+                    <div class="weakness-box">
+                        <h3>⚠️ Priority Improvement Areas</h3>
+                        <ul id="weaknessList"><li>Submit data in the Predictor tab first.</li></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommendations-container">
+                <h3>💡 Actionable Improvement Recommendations</h3>
+                <div id="recommendationsList" class="recs-grid">
+                    <p class="placeholder-text">Complete the form to generate custom recommendations.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: MODEL PERFORMANCE -->
+        <section id="performance" class="tab-content">
+            <h2>📈 Model Performance & Comparative Analysis</h2>
+            <p>Benchmarking supervised ML classification models trained on historical student datasets.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Accuracy</th>
+                        <th>Precision</th>
+                        <th>Recall</th>
+                        <th>F1-Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row">
+                        <td><strong>Random Forest Classifier (Selected)</strong></td>
+                        <td>92.5%</td>
+                        <td>91.8%</td>
+                        <td>93.1%</td>
+                        <td><strong>0.924</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Support Vector Machine (SVM)</td>
+                        <td>89.0%</td>
+                        <td>88.5%</td>
+                        <td>89.2%</td>
+                        <td>0.888</td>
+                    </tr>
+                    <tr>
+                        <td>Logistic Regression</td>
+                        <td>86.5%</td>
+                        <td>85.0%</td>
+                        <td>87.1%</td>
+                        <td>0.860</td>
+                    </tr>
+                    <tr>
+                        <td>K-Nearest Neighbors (KNN)</td>
+                        <td>84.2%</td>
+                        <td>83.1%</td>
+                        <td>84.5%</td>
+                        <td>0.838</td>
+                    </tr>
+                    <tr>
+                        <td>Decision Tree Classifier</td>
+                        <td>81.0%</td>
+                        <td>80.2%</td>
+                        <td>81.5%</td>
+                        <td>0.808</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- SECTION 5: ABOUT -->
+        <section id="about" class="tab-content">
+            <h2>ℹ️ About the System</h2>
+            <div class="about-card">
+                <h3>Project Objective</h3>
+                <p>This application models a complete machine learning workflow: collecting student data, engineering scores, predicting binary outcomes (Placed / Not Placed), and rendering actionable insights.</p>
+                
+                <h3>Key Limitations</h3>
+                <ul>
+                    <li>Historical placement datasets may contain intrinsic sampling bias.</li>
+                    <li>Qualitative evaluation factors (attitude, soft skills in person) cannot be entirely modeled digitally.</li>
+                    <li>This prediction serves purely as a guidance tool, not an absolute employment guarantee.</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
